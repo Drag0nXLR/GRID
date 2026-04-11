@@ -1,0 +1,72 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>GRID | Система адаптивної оптимізації світлофорів</title>
+    <link rel="stylesheet" href="{% static 'intersection/styles.css' %}">
+</head>
+<body>
+    <div class="header">
+        <div class="logo">
+            <img src="{% static 'intersection/logo.jpg' %}" alt="GRID Logo" class="logo-img">
+        </div>
+        <div class="location">
+            <div>Система адаптивної оптимізації світлофорів</div>
+            <div style="font-size: 0.8rem; margin-top: 5px;">📍 Пілотне перехрестя: пр. Волі – вул. Винниченка, м. Луцьк</div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="simulation-card">
+            <canvas id="sim" width="850" height="450"></canvas>
+        </div>
+        <div style="display: grid; grid-template-rows: auto auto; gap: 20px;">
+            <div class="controls-card">
+                <h3 class="card-title">⚙️ Керування</h3>
+                <div class="scenario-switch">
+                    <button class="scenario-btn active" data-scenario="morning">🌅 Ранковий пік</button>
+                    <button class="scenario-btn" data-scenario="day">☀️ Міжпік</button>
+                    <button class="scenario-btn" data-scenario="evening">🌆 Вечірній пік</button>
+                </div>
+                <div class="mode-switch">
+                    <button id="modeCurrent" class="mode-btn active">🔴 Поточний (74с)</button>
+                    <button id="modeOptimized" class="mode-btn">🟢 Оптимізований (86с)</button>
+                    <button id="modeAdaptive" class="mode-btn">🤖 Адаптивний</button>
+                </div>
+                <button id="btnToggle" class="action-btn btn-start"><span>▶</span> Запустити</button>
+                <button class="action-btn btn-ambulance" id="btnAmbulance"><span>🚑</span> Швидка допомога</button>
+                <button class="action-btn btn-silence" id="btnSilence"><span>🕯️</span> Хвилина мовчання</button>
+                <div class="timer-display">До зміни: <span id="timerDisplay">25</span> с</div>
+                <div class="status-section">
+                    <div class="status-item"><span class="status-label">Статус</span><span class="status-value" id="status">Очікування</span></div>
+                    <div class="status-item"><span class="status-label">Світлофор (головний)</span><span class="status-value" id="lightStatus"><span class="light-indicator light-red"></span> Червоний</span></div>
+                    <div class="status-item"><span class="status-label">Авто на екрані</span><span class="status-value" id="carCount">0</span></div>
+                </div>
+            </div>
+            <div class="stats-card">
+                <h3 class="card-title">📊 Ефективність оптимізації</h3>
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <div class="stat-label">Ступінь насичення (x)</div>
+                        <div class="stat-value" id="statSaturation">1.13</div>
+                        <div class="stat-improvement negative">→ 0.90 (-20.4%)</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">Пропускна здатність</div>
+                        <div class="stat-value" id="statCapacity">22</div>
+                        <div class="stat-improvement">→ 27.7 (+25.8%)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <div><strong>GRID — Система розумного регулювання трафіку</strong></div>
+        <div style="margin-top: 8px;">Пілотний проєкт для м. Луцька • Луцький ліцей №1 • 2025</div>
+        <div style="margin-top: 5px; font-size: 0.8rem;">🔬 На основі математичного моделювання та емпіричних даних (пр. Волі – вул. Винниченка)</div>
+        <div style="margin-top: 5px; font-size: 0.8rem;">Науковий керівник: Плахтина Інеса Анатоліївна</div>
+    </div>
+
+    <script src="{% static 'intersection/script.js' %}"></script>
+</body>
+</html>
