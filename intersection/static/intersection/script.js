@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let aiDecision = null;
     let aiThinking = false;
     let aiCallCooldown = 0;
-    const AI_COOLDOWN_TICKS = 15; // ask AI every 15 seconds max
+    const AI_COOLDOWN_TICKS = 15;
 
     const SCENARIOS = {
         morning: { q: 1212, L: 9, name: 'Ранковий пік (08:00–09:00)' },
@@ -96,7 +96,6 @@ Optimize the signal timing.`
                 MODES.adaptive.x = typeof parsed.x === 'number' && isFinite(parsed.x) ? parsed.x : 0.90;
                 MODES.adaptive.mu = typeof parsed.mu === 'number' && isFinite(parsed.mu) ? parsed.mu : 27.67;
 
-                // Show AI reason in status
                 if (parsed.reason && statusEl) {
                     statusEl.textContent = `🤖 ${parsed.reason}`;
                     setTimeout(() => updateUI(), 3000);
@@ -138,21 +137,21 @@ Optimize the signal timing.`
         ctx.beginPath(); ctx.moveTo(0, ROAD_Y - 35); ctx.lineTo(canvas.width, ROAD_Y - 35); ctx.stroke();
         ctx.beginPath(); ctx.moveTo(0, ROAD_Y + 35); ctx.lineTo(canvas.width, ROAD_Y + 35); ctx.stroke();
         ctx.setLineDash([]);
-        
+
         ctx.fillStyle = '#555';
         ctx.fillRect(ROAD_X - 35, ROAD_Y, 70, canvas.height - ROAD_Y);
         ctx.fillStyle = '#f1c40f';
         ctx.fillRect(ROAD_X - 5, ROAD_Y, 10, canvas.height - ROAD_Y);
-        
+
         ctx.fillStyle = '#666';
         ctx.fillRect(STOP_LEFT, ROAD_Y - 35, STOP_RIGHT - STOP_LEFT, 70);
         ctx.fillRect(ROAD_X - 35, ROAD_Y, 70, STOP_TURN - ROAD_Y);
-        
+
         ctx.fillStyle = '#fff';
         ctx.fillRect(STOP_LEFT, ROAD_Y - 35, 8, 70);
         ctx.fillRect(STOP_RIGHT, ROAD_Y - 35, 8, 70);
         ctx.fillRect(ROAD_X - 35, STOP_TURN, 70, 8);
-        
+
         ctx.fillStyle = '#fff';
         ctx.setLineDash([8, 8]);
         ctx.lineWidth = 3;
@@ -185,7 +184,6 @@ Optimize the signal timing.`
             if (col.s) { ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.stroke(); }
         });
 
-        // AI indicator dot
         if (currentMode === 'adaptive') {
             ctx.fillStyle = aiThinking ? '#f1c40f' : (aiDecision ? '#2ecc71' : '#95a5a6');
             ctx.beginPath();
@@ -490,7 +488,7 @@ Optimize the signal timing.`
         MODES.adaptive.x = 0.90;
         MODES.adaptive.mu = 27.67;
         aiDecision = null;
-        aiCallCooldown = 0; // trigger AI immediately on next tick
+        aiCallCooldown = 0;
         updateUI();
     };
 
@@ -498,23 +496,27 @@ Optimize the signal timing.`
     updateUI();
 });
 
-// ── 3D CARD TILT ───────────────────────────────────────────────────────────────
+// ── 3D CARD TILT (desktop only) ───────────────────────────────────────────────
 
-document.querySelectorAll('.simulation-card, .controls-card, .stats-card').forEach(card => {
-    card.addEventListener('mousemove', e => {
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        const rotateX = ((y / rect.height) - 0.5) * -20;
-        const rotateY = ((x / rect.width) - 0.5) * 20;
-        card.style.transform = `perspective(10000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
-        card.style.boxShadow = '0 12px 50px rgba(78, 205, 196, 0.3)';
-        card.style.borderColor = 'rgba(78, 205, 196, 0.4)';
-    });
+const isTouchDevice = window.matchMedia('(hover: none)').matches;
 
-    card.addEventListener('mouseleave', () => {
-        card.style.transform = 'perspective(10000px) rotateX(0deg) rotateY(0deg) scale(1)';
-        card.style.boxShadow = '';
-        card.style.borderColor = '';
+if (!isTouchDevice) {
+    document.querySelectorAll('.simulation-card, .controls-card, .stats-card').forEach(card => {
+        card.addEventListener('mousemove', e => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const rotateX = ((y / rect.height) - 0.5) * -20;
+            const rotateY = ((x / rect.width) - 0.5) * 20;
+            card.style.transform = `perspective(10000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+            card.style.boxShadow = '0 12px 50px rgba(78, 205, 196, 0.3)';
+            card.style.borderColor = 'rgba(78, 205, 196, 0.4)';
+        });
+
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = 'perspective(10000px) rotateX(0deg) rotateY(0deg) scale(1)';
+            card.style.boxShadow = '';
+            card.style.borderColor = '';
+        });
     });
-});
+}

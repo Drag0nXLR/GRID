@@ -2,7 +2,7 @@
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: 
+    background:
         linear-gradient(135deg, rgba(26,26,46,0.95) 0%, rgba(22,33,62,0.95) 100%),
         repeating-linear-gradient(0deg, rgba(78,205,196,0.03) 0px, rgba(78,205,196,0.03) 1px, transparent 1px, transparent 20px),
         repeating-linear-gradient(90deg, rgba(78,205,196,0.03) 0px, rgba(78,205,196,0.03) 1px, transparent 1px, transparent 20px);
@@ -11,14 +11,14 @@ body {
 
 /* Header з glow на hover */
 .header {
-    max-width: 1400px; 
+    max-width: 1400px;
     margin: 0 auto 20px;
-    display: flex; 
-    justify-content: space-between; 
+    display: flex;
+    justify-content: space-between;
     align-items: center;
     padding: 20px 30px;
     background: linear-gradient(135deg, #ffffff 0%, rgba(44,62,80,0.8) 100%);
-    border-radius: 12px; 
+    border-radius: 12px;
     border: 2px solid rgba(78, 205, 196, 0.3);
     box-shadow: 0 4px 20px rgba(78, 205, 196, 0.2);
     transition: box-shadow 0.3s ease, border-color 0.3s ease; /* ✅ Додано transition */
@@ -31,10 +31,10 @@ body {
 }
 
 .logo {
-    font-size: 2rem; 
-    font-weight: 700; 
-    display: flex; 
-    align-items: center; 
+    font-size: 2rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
     gap: 15px;
     letter-spacing: 3px;
     color: #1a1a2e;
@@ -54,9 +54,9 @@ body {
 
 /* Картки з glow на hover */
 .simulation-card, .controls-card, .stats-card {
-    background: rgba(78,205,196,0.03); 
+    background: rgba(78,205,196,0.03);
     border-radius: 12px;
-    border: 1px solid rgba(78,205,196,0.15); 
+    border: 1px solid rgba(78,205,196,0.15);
     padding: 20px;
     transition: box-shadow 0.3s ease, border-color 0.3s ease; /* ✅ Додано transition */
     transform-style: preserve-3d;
@@ -146,23 +146,34 @@ canvas { display: block; width: 100%; height: auto; background: rgba(44,62,80,0.
 .footer { max-width: 1400px; margin: 20px auto 0; text-align: center; color: #95a5a6; font-size: 0.85rem; padding: 15px; }
 
 @media (max-width: 1024px) {
-    .header { 
-        flex-direction: column; 
-        gap: 15px; 
-        text-align: center; 
+    .header {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
         padding: 15px 20px;
     }
-    
+
     .logo {
         flex-direction: column;
         gap: 10px;
     }
-    
+
     .logo-img {
         height: 40px;
     }
-    
-    .location { 
-        text-align: center; 
+
+    .location {
+        text-align: center;
+    }
+}
+
+@media (hover: none) {
+    .simulation-card:hover, .controls-card:hover, .stats-card:hover,
+    .header:hover, .stat-box:hover, .mode-btn:hover, .scenario-btn:hover,
+    .action-btn:hover {
+        transform: none;
+        box-shadow: none;
+        border-color: rgba(78, 205, 196, 0.15);
+        background: initial;
     }
 }
