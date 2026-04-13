@@ -9,7 +9,7 @@ body {
     min-height: 100vh; padding: 20px; color: #e0e0e0;
 }
 
-/* Header з glow на hover */
+/* ── HEADER ──────────────────────────────────────────────────────────────── */
 .header {
     max-width: 1400px;
     margin: 0 auto 20px;
@@ -21,156 +21,189 @@ body {
     border-radius: 12px;
     border: 2px solid rgba(78, 205, 196, 0.3);
     box-shadow: 0 4px 20px rgba(78, 205, 196, 0.2);
-    transition: box-shadow 0.3s ease, border-color 0.3s ease; /* ✅ Додано transition */
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
 }
-
-/* ✅ GLOW на hover для header */
 .header:hover {
     box-shadow: 0 8px 40px rgba(78, 205, 196, 0.4);
     border-color: rgba(78, 205, 196, 0.5);
 }
-
 .logo {
-    font-size: 2rem;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    letter-spacing: 3px;
-    color: #1a1a2e;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-size: 2rem; font-weight: 700; display: flex; align-items: center;
+    gap: 15px; letter-spacing: 3px; color: #1a1a2e;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
-
-.logo-img {
-    height: 50px;
-    width: auto;
-    object-fit: contain;
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
-}
-
+.logo-img { height: 50px; width: auto; object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1)); }
 .location { color: #95a5a6; font-size: 0.9rem; text-align: right; }
 
-.container { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 1fr 400px; gap: 20px; }
+/* ── MAIN GRID ───────────────────────────────────────────────────────────── */
+.container {
+    max-width: 1400px; margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    gap: 20px;
+}
+.sidebar { display: grid; grid-template-rows: auto auto; gap: 20px; }
 
-/* Картки з glow на hover */
-.simulation-card, .controls-card, .stats-card {
+/* ── ANALYTICS ROW ───────────────────────────────────────────────────────── */
+.analytics-row {
+    max-width: 1400px; margin: 20px auto 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+}
+
+/* ── CARDS ───────────────────────────────────────────────────────────────── */
+.simulation-card, .controls-card, .stats-card, .chart-card {
     background: rgba(78,205,196,0.03);
     border-radius: 12px;
     border: 1px solid rgba(78,205,196,0.15);
     padding: 20px;
-    transition: box-shadow 0.3s ease, border-color 0.3s ease; /* ✅ Додано transition */
     transform-style: preserve-3d;
     transition: transform 0.1s ease, box-shadow 0.3s ease, border-color 0.3s ease;
 }
-
-/* ✅ GLOW на hover для карток */
-.simulation-card:hover, .controls-card:hover, .stats-card:hover {
+.simulation-card:hover, .controls-card:hover, .stats-card:hover, .chart-card:hover {
     box-shadow: 0 12px 50px rgba(78, 205, 196, 0.3);
     border-color: rgba(78, 205, 196, 0.4);
 }
 
-canvas { display: block; width: 100%; height: auto; background: rgba(44,62,80,0.8); border-radius: 8px; border: 1px solid rgba(78,205,196,0.1); }
+canvas#sim { display: block; width: 100%; height: auto; background: rgba(44,62,80,0.8); border-radius: 8px; border: 1px solid rgba(78,205,196,0.1); }
 
+/* ── CHART CANVAS ────────────────────────────────────────────────────────── */
+canvas#chartQueue, canvas#chartSat {
+    width: 100% !important;
+    display: block;
+}
+
+/* ── CYCLE LOG ───────────────────────────────────────────────────────────── */
+.cycle-log {
+    max-height: 160px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding-right: 4px;
+}
+.cycle-log::-webkit-scrollbar { width: 4px; }
+.cycle-log::-webkit-scrollbar-track { background: rgba(78,205,196,0.05); border-radius: 2px; }
+.cycle-log::-webkit-scrollbar-thumb { background: rgba(78,205,196,0.3); border-radius: 2px; }
+.cycle-entry {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 6px 10px; border-radius: 6px;
+    background: rgba(78,205,196,0.05);
+    font-size: 0.78rem; color: #95a5a6;
+    border-left: 3px solid transparent;
+    animation: fadeIn 0.3s ease;
+}
+.cycle-entry.green { border-color: #2ecc71; }
+.cycle-entry.red   { border-color: #e74c3c; }
+.cycle-entry.adaptive { border-color: #9b59b6; }
+.cycle-entry span.badge {
+    font-size: 0.7rem; padding: 2px 6px; border-radius: 4px;
+    font-weight: 600;
+}
+.cycle-entry.green span.badge { background: rgba(46,204,113,0.2); color: #2ecc71; }
+.cycle-entry.red span.badge   { background: rgba(231,76,60,0.2); color: #e74c3c; }
+.cycle-entry.adaptive span.badge { background: rgba(155,89,182,0.2); color: #9b59b6; }
+.cycle-empty { color: #95a5a6; font-size: 0.8rem; text-align: center; padding: 20px 0; }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ── CONTROLS ────────────────────────────────────────────────────────────── */
 .card-title { font-size: 1.1rem; font-weight: 600; color: #4ecdc4; margin-bottom: 20px; }
-
 .mode-switch, .scenario-switch { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
-
 .mode-btn, .scenario-btn {
-    flex: 1; min-width: 120px; padding: 12px;
+    flex: 1; min-width: 100px; padding: 12px;
     border: 1px solid rgba(78,205,196,0.3); border-radius: 8px;
     background: rgba(78,205,196,0.05); color: #95a5a6; cursor: pointer; font-size: 0.85rem;
-    transition: all 0.3s ease; /* ✅ Додано transition для кнопок */
+    transition: all 0.3s ease;
 }
-
-.mode-btn:hover, .scenario-btn:hover {
-    background: rgba(78,205,196,0.15);
-    border-color: rgba(78,205,196,0.5);
-}
-
+.mode-btn:hover, .scenario-btn:hover { background: rgba(78,205,196,0.15); border-color: rgba(78,205,196,0.5); }
 .mode-btn.active, .scenario-btn.active {
     background: rgba(78,205,196,0.25); color: #1a1a2e;
     border-color: #4ecdc4; font-weight: 600;
-    box-shadow: 0 0 15px rgba(78, 205, 196, 0.3); /* ✅ Glow для активної кнопки */
+    box-shadow: 0 0 15px rgba(78,205,196,0.3);
 }
-
 .action-btn {
     width: 100%; padding: 14px; border: none; border-radius: 8px;
     cursor: pointer; font-size: 0.95rem; font-weight: 600;
     margin-bottom: 12px; display: flex; align-items: center; justify-content: center; gap: 8px;
-    transition: all 0.3s ease; /* ✅ Додано transition */
+    transition: all 0.3s ease;
 }
-
-.action-btn:hover {
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-}
-
+.action-btn:hover { box-shadow: 0 6px 20px rgba(0,0,0,0.3); }
 .btn-start { background: linear-gradient(135deg, #27ae60, #2ecc71); color: white; }
-.btn-stop { background: linear-gradient(135deg, #e74c3c, #ff6b6b); color: white; }
+.btn-stop  { background: linear-gradient(135deg, #e74c3c, #ff6b6b); color: white; }
 .btn-ambulance { background: linear-gradient(135deg, #f39c12, #f1c40f); color: white; }
-.btn-silence { background: linear-gradient(135deg, #9b59b6, #8e44ad); color: white; }
+.btn-silence   { background: linear-gradient(135deg, #9b59b6, #8e44ad); color: white; }
 
 .timer-display {
     font-size: 1.2rem; font-weight: 700; color: #4ecdc4;
     text-align: center; padding: 10px;
     background: rgba(78,205,196,0.1); border-radius: 6px; margin-top: 15px;
 }
-
 .status-section { margin-top: 25px; padding-top: 20px; border-top: 1px solid rgba(78,205,196,0.1); }
-.status-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; }
+.status-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; }
 .status-label { color: #95a5a6; font-size: 0.9rem; }
 .status-value { color: #e0e0e0; font-weight: 600; }
 
 .light-indicator { display: inline-block; width: 12px; height: 12px; border-radius: 50%; margin-right: 8px; }
-.light-red { background: #e74c3c; }
+.light-red    { background: #e74c3c; }
 .light-yellow { background: #f1c40f; }
-.light-green { background: #2ecc71; }
+.light-green  { background: #2ecc71; }
 
-.stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; }
-
+/* ── STATS GRID ──────────────────────────────────────────────────────────── */
+.stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 15px; }
 .stat-box {
-    background: rgba(78,205,196,0.05); padding: 15px; border-radius: 8px; text-align: center;
-    transition: all 0.3s ease; /* ✅ Додано transition */
+    background: rgba(78,205,196,0.05); padding: 14px; border-radius: 8px; text-align: center;
+    transition: all 0.3s ease;
 }
-
-.stat-box:hover {
-    background: rgba(78,205,196,0.1);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(78, 205, 196, 0.2);
-}
-
-.stat-label { font-size: 0.8rem; color: #95a5a6; }
-.stat-value { font-size: 1.5rem; font-weight: 700; color: #4ecdc4; margin: 5px 0; }
-.stat-improvement { font-size: 0.75rem; color: #2ecc71; }
+.stat-box:hover { background: rgba(78,205,196,0.1); box-shadow: 0 4px 15px rgba(78,205,196,0.2); }
+.stat-label { font-size: 0.75rem; color: #95a5a6; }
+.stat-value { font-size: 1.4rem; font-weight: 700; color: #4ecdc4; margin: 5px 0; }
+.stat-improvement { font-size: 0.72rem; color: #2ecc71; }
 .stat-improvement.negative { color: #e74c3c; }
 
+/* ── FOOTER ──────────────────────────────────────────────────────────────── */
 .footer { max-width: 1400px; margin: 20px auto 0; text-align: center; color: #95a5a6; font-size: 0.85rem; padding: 15px; }
 
-@media (max-width: 1024px) {
-    .header {
-        flex-direction: column;
-        gap: 15px;
-        text-align: center;
-        padding: 15px 20px;
-    }
-
-    .logo {
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    .logo-img {
-        height: 40px;
-    }
-
-    .location {
-        text-align: center;
-    }
+/* ── RESPONSIVE: TABLET ──────────────────────────────────────────────────── */
+@media (max-width: 1100px) {
+    .container { grid-template-columns: 1fr; }
+    .sidebar { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+    .analytics-row { grid-template-columns: 1fr 1fr; }
+    .analytics-row .chart-card:last-child { grid-column: 1 / -1; }
 }
 
+/* ── RESPONSIVE: MOBILE ──────────────────────────────────────────────────── */
+@media (max-width: 680px) {
+    body { padding: 12px; }
+
+    .header {
+        flex-direction: column; gap: 10px;
+        text-align: center; padding: 15px;
+    }
+    .logo { flex-direction: column; gap: 8px; font-size: 1.4rem; }
+    .logo-img { height: 36px; }
+    .location { text-align: center; font-size: 0.8rem; }
+
+    .container { grid-template-columns: 1fr; gap: 12px; }
+    .sidebar { grid-template-columns: 1fr; gap: 12px; }
+    .analytics-row { grid-template-columns: 1fr; gap: 12px; }
+
+    .mode-switch, .scenario-switch { gap: 6px; }
+    .mode-btn, .scenario-btn { min-width: 80px; padding: 10px 6px; font-size: 0.78rem; }
+
+    .stats-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .stat-value { font-size: 1.2rem; }
+
+    .card-title { font-size: 1rem; margin-bottom: 14px; }
+    .simulation-card, .controls-card, .stats-card, .chart-card { padding: 14px; }
+}
+
+/* ── DISABLE HOVER ON TOUCH ──────────────────────────────────────────────── */
 @media (hover: none) {
     .simulation-card:hover, .controls-card:hover, .stats-card:hover,
-    .header:hover, .stat-box:hover, .mode-btn:hover, .scenario-btn:hover,
-    .action-btn:hover {
+    .chart-card:hover, .header:hover, .stat-box:hover,
+    .mode-btn:hover, .scenario-btn:hover, .action-btn:hover {
         transform: none;
         box-shadow: none;
         border-color: rgba(78, 205, 196, 0.15);

@@ -3,6 +3,7 @@
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GRID | Система адаптивної оптимізації світлофорів</title>
     <link rel="stylesheet" href="{% static 'intersection/styles.css' %}">
 </head>
@@ -16,11 +17,15 @@
             <div style="font-size: 0.8rem; margin-top: 5px;">📍 Пілотне перехрестя: пр. Волі – вул. Винниченка, м. Луцьк</div>
         </div>
     </div>
+
     <div class="container">
+        <!-- LEFT: simulation -->
         <div class="simulation-card">
             <canvas id="sim" width="850" height="450"></canvas>
         </div>
-        <div style="display: grid; grid-template-rows: auto auto; gap: 20px;">
+
+        <!-- RIGHT: controls + stats -->
+        <div class="sidebar">
             <div class="controls-card">
                 <h3 class="card-title">⚙️ Керування</h3>
                 <div class="scenario-switch">
@@ -39,27 +44,57 @@
                 <div class="timer-display">До зміни: <span id="timerDisplay">25</span> с</div>
                 <div class="status-section">
                     <div class="status-item"><span class="status-label">Статус</span><span class="status-value" id="status">Очікування</span></div>
-                    <div class="status-item"><span class="status-label">Світлофор (головний)</span><span class="status-value" id="lightStatus"><span class="light-indicator light-red"></span> Червоний</span></div>
+                    <div class="status-item"><span class="status-label">Світлофор</span><span class="status-value" id="lightStatus"><span class="light-indicator light-red"></span> Червоний</span></div>
                     <div class="status-item"><span class="status-label">Авто на екрані</span><span class="status-value" id="carCount">0</span></div>
                 </div>
             </div>
+
             <div class="stats-card">
-                <h3 class="card-title">📊 Ефективність оптимізації</h3>
+                <h3 class="card-title">📊 Показники режиму</h3>
                 <div class="stats-grid">
                     <div class="stat-box">
                         <div class="stat-label">Ступінь насичення (x)</div>
                         <div class="stat-value" id="statSaturation">1.13</div>
-                        <div class="stat-improvement negative">→ 0.90 (-20.4%)</div>
+                        <div class="stat-improvement negative" id="satImprov">→ 0.90 (-20.4%)</div>
                     </div>
                     <div class="stat-box">
                         <div class="stat-label">Пропускна здатність</div>
                         <div class="stat-value" id="statCapacity">22</div>
-                        <div class="stat-improvement">→ 27.7 (+25.8%)</div>
+                        <div class="stat-improvement" id="capImprov">→ 27.7 (+25.8%)</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">Авто в черзі</div>
+                        <div class="stat-value" id="statQueue">0</div>
+                        <div class="stat-improvement" id="queueTrend">зараз</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">Середнє очікування</div>
+                        <div class="stat-value" id="statAvgWait">0с</div>
+                        <div class="stat-improvement" id="waitTrend">за цикл</div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- ANALYTICS ROW -->
+    <div class="analytics-row">
+        <div class="chart-card">
+            <h3 class="card-title">📈 Черга в реальному часі</h3>
+            <canvas id="chartQueue" height="120"></canvas>
+        </div>
+        <div class="chart-card">
+            <h3 class="card-title">⚡ Ступінь насичення (x)</h3>
+            <canvas id="chartSat" height="120"></canvas>
+        </div>
+        <div class="chart-card">
+            <h3 class="card-title">🔄 Цикли світлофора</h3>
+            <div class="cycle-log" id="cycleLog">
+                <div class="cycle-empty">Запустіть симуляцію для перегляду</div>
+            </div>
+        </div>
+    </div>
+
     <div class="footer">
         <div><strong>GRID — Система розумного регулювання трафіку</strong></div>
         <div style="margin-top: 8px;">Пілотний проєкт для м. Луцька • Луцький ліцей №1 • 2025</div>
