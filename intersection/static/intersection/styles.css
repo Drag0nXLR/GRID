@@ -180,10 +180,11 @@ canvas#chartQueue, canvas#chartSat {
     .header {
         flex-direction: column; gap: 10px;
         text-align: center; padding: 15px;
+        background-color: #ffffff; /* ✅ fully white for mobile */
     }
     .logo { flex-direction: column; gap: 8px; font-size: 1.4rem; }
     .logo-img { height: 36px; }
-    .location { text-align: center; font-size: 0.8rem; }
+    .location { text-align: center; font-size: 0.8rem; color: #2c3e50; }
 
     .container { grid-template-columns: 1fr; gap: 12px; }
     .sidebar { grid-template-columns: 1fr; gap: 12px; }
@@ -207,6 +208,5 @@ canvas#chartQueue, canvas#chartSat {
         transform: none;
         box-shadow: none;
         border-color: rgba(78, 205, 196, 0.15);
-        background: initial;
     }
 }
