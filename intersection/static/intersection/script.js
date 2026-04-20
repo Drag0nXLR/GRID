@@ -46,6 +46,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const ROAD_Y = 200, ROAD_X = 450, STOP_LEFT = 350, STOP_RIGHT = 550,
           STOP_TURN = 235, STOP_ZONE = 150, CAR_LENGTH = 30, MIN_CAR_GAP = 40;
+    
+    // -- Ambulance check ----------------------------------------------------
+
+    function checkAmbulanceProximity() {
+        const ambulances = cars.filter(c => c.type === 'amb' && c.active);
+        if (ambulances.length === 0) return;
+
+        const anyNearIntersection = ambulances.some(amb =>
+            (Math.abs(amb.x - ROAD_X) < 150 && Math.abs(amb.y - ROAD_Y) < 50) ||
+            (Math.abs(amb.y - ROAD_Y) < 150 && Math.abs(amb.x - ROAD_X) < 50)
+        );
+
+        if (anyNearIntersection && lightState !== 'red') {
+            lightState = 'red';
+            lightTimer = 10;
+            if (statusEl) {
+                statusEl.textContent = '🚨 Пріоритет швидкої допомоги!';
+            }
+        }
+    }
 
     // ── MINI CHART ENGINE ──────────────────────────────────────────────────
 
@@ -264,6 +284,16 @@ Reduce green if few cars, extend if queue is long.`,
         drawTrafficLight(340, 90, lightState);
         cars.forEach(c => { if (c.active) drawCar(c.x, c.y, c.color, c.dir, c.turning); });
         carCountEl.textContent = cars.filter(c => c.active).length;
+
+        const amb = cars.find(c => c.type === 'amb' && c.active);
+        if (amb) {
+            // flashing siren circle
+            const pulse = Math.sin(Date.now() / 150) > 0;
+            ctx.beginPath();
+            ctx.arc(amb.x + 15, amb.y, pulse ? 18 : 14, 0, Math.PI * 2);
+            ctx.fillStyle = pulse ? 'rgba(231,76,60,0.3)' : 'rgba(241,196,15,0.3)';
+            ctx.fill();
+        }
     }
 
     // ── CAR SPAWNING & MOVEMENT ────────────────────────────────────────────
@@ -347,6 +377,7 @@ Reduce green if few cars, extend if queue is long.`,
         if (lightInterval) clearInterval(lightInterval);
         lightInterval = setInterval(() => {
             if (!running) return;
+            checkAmbulanceProximity();
 
             if (currentMode === 'adaptive') {
                 aiCallCooldown--;
